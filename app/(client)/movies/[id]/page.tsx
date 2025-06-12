@@ -6,8 +6,6 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import { Star, Clock, Calendar, Play } from "lucide-react"
 import Link from "next/link"
 
@@ -48,7 +46,6 @@ export default function MovieDetailPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
-        <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="animate-pulse">
             <div className="h-8 bg-muted rounded w-1/3 mb-8" />
@@ -69,7 +66,6 @@ export default function MovieDetailPage() {
   if (!movie) {
     return (
       <div className="min-h-screen bg-background">
-        <Header />
         <div className="container mx-auto px-4 py-8 text-center">
           <h1 className="text-2xl font-bold mb-4">Không tìm thấy phim</h1>
           <Button asChild>
@@ -82,7 +78,6 @@ export default function MovieDetailPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       <main className="container mx-auto px-4 py-8">
         <div className="grid md:grid-cols-3 gap-8">
           <div className="relative">
@@ -127,7 +122,7 @@ export default function MovieDetailPage() {
 
             <div>
               <h2 className="text-xl font-semibold mb-2">Diễn viên</h2>
-              <p className="text-muted-foreground">{movie.cast.join(", ")}</p>
+              {/* <p className="text-muted-foreground">{movie.cast.join(", ")}</p> */}
             </div>
 
             <div className="flex gap-4">
@@ -162,7 +157,6 @@ export default function MovieDetailPage() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   )
 }

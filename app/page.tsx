@@ -1,8 +1,8 @@
 import { Suspense } from "react"
 import { MovieGrid } from "@/components/movie-grid"
 import { HeroSection } from "@/components/hero-section"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
+import { Header } from "@/components/client/Header"
+import { Footer } from "@/components/client/Footer"
 import { LoadingSpinner } from "@/components/ui/loading-spinner"
 
 export default function HomePage() {
