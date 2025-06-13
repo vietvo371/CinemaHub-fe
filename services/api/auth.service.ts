@@ -1,30 +1,48 @@
-import axios from 'axios';
-import { LoginDto, RegisterDto, AuthResponse, User } from '@/types/auth.types';
+import { LoginDto, RegisterDto, AuthResponse, RegisterResponse } from '@/types/auth.types';
+import axiosInstance  from '@/lib/axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+export const AuthService = {
+  async login(data: LoginDto): Promise<AuthResponse> {
+    try {
+      const response = await axiosInstance.post<AuthResponse>('/auth/login', data);
+      return response.data;
+    } catch (error: any) {
+      if (error.response?.data) {
+        throw error;
+      }
+      throw new Error('Không thể kết nối đến server');
+    }
+  },
 
-export class AuthService {
-  static async login(data: LoginDto): Promise<AuthResponse> {
-    const response = await axios.post<AuthResponse>(`${API_URL}/auth/login`, data);
-    return response.data;
-  }
+  async register(data: RegisterDto): Promise<RegisterResponse> {
+    try {
+      const response = await axiosInstance.post<RegisterResponse>('/auth/register', data);
+      return response.data;
+    } catch (error: any) {
+      if (error.response?.data) {
+        throw error;
+      }
+      throw new Error('Không thể kết nối đến server');
+    }
+  },
 
-  static async register(data: RegisterDto): Promise<AuthResponse> {
-    const response = await axios.post<AuthResponse>(`${API_URL}/auth/register`, data);
-    return response.data;
-  }
+  async refreshToken(): Promise<AuthResponse> {
+    try {
+      const refreshToken = localStorage.getItem('refreshToken');
+      const response = await axiosInstance.post<AuthResponse>('/auth/refresh', {
+        refreshToken,
+      });
+      return response.data;
+    } catch (error: any) {
+      if (error.response?.data) {
+        throw error;
+      }
+      throw new Error('Không thể kết nối đến server');
+    }
+  },
 
-  static async logout(): Promise<void> {
-    await axios.post(`${API_URL}/auth/logout`);
-  }
-
-  static async getProfile(): Promise<User> {
-    const response = await axios.get<User>(`${API_URL}/auth/profile`);
-    return response.data;
-  }
-
-  static async refreshToken(): Promise<AuthResponse> {
-    const response = await axios.post<AuthResponse>(`${API_URL}/auth/refresh`);
-    return response.data;
-  }
-} 
+  logout() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+  },
+}; 

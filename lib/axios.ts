@@ -1,7 +1,12 @@
-import axios from 'axios';
+import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { AuthService } from '@/services/api/auth.service';
+import { ApiError } from './api-response';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+const API_URL = process.env.NEST_PUBLIC_API_URL || 'http://localhost:3030/api';
+
+interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+}
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
@@ -27,17 +32,29 @@ axiosInstance.interceptors.request.use(
 // Response interceptor
 axiosInstance.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+  async (error: AxiosError<ApiError>) => {
+    const originalRequest = error.config as CustomAxiosRequestConfig;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // Handle NestJS error response
+    if (error.response?.data) {
+      const errorData = error.response.data;
+      const errorMessage = Array.isArray(errorData.message) 
+        ? errorData.message[0] 
+        : errorData.message || errorData.error || 'An error occurred';
+      error.message = errorMessage;
+    }
+
+    // Handle 401 Unauthorized
+    if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
         const response = await AuthService.refreshToken();
         localStorage.setItem('accessToken', response.accessToken);
         
-        originalRequest.headers.Authorization = `Bearer ${response.accessToken}`;
+        if (originalRequest.headers) {
+          originalRequest.headers.Authorization = `Bearer ${response.accessToken}`;
+        }
         return axiosInstance(originalRequest);
       } catch (error) {
         localStorage.removeItem('accessToken');
