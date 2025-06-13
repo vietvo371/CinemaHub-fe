@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Header } from "@/components/header"
+import { AdminHeader } from "@/components/admin/AdminHeader"
 import { AdminSidebar } from "@/components/admin-sidebar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -29,7 +29,7 @@ export default function ShowtimesPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <AdminHeader />
       <div className="flex">
         <AdminSidebar />
         <main className="flex-1 p-6">

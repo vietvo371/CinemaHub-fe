@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
+import GoogleIcon from "@/components/icon/google.png"
+import FacebookIcon from "@/components/icon/FacebookIcon.png"
+import Image from "next/image"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -63,9 +66,19 @@ export default function LoginPage() {
           <Button type="submit" className="w-full">
             Đăng nhập
           </Button>
-
+          <div className="text-center text-sm text-gray-600">hoặc đăng nhập bằng</div>
+          <div className="flex justify-center gap-2">
+            <Button variant="outline" className="w-full">
+              <Image src={GoogleIcon} alt="Google" width={20} height={20} />
+              Đăng nhập với Google
+            </Button>
+            <Button variant="outline" className="w-full">
+              <Image src={FacebookIcon} alt="Facebook" width={20} height={20} />
+              Đăng nhập với Facebook
+            </Button>
+          </div>
           <p className="text-center text-sm text-gray-600">
-            Chưa có tài khoản?{" "}
+            Bạn chưa có tài khoản?{" "}
             <button
               type="button"
               onClick={() => router.push("/auth/register")}
