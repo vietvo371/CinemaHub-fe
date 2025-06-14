@@ -31,7 +31,7 @@ jobs:
       - name: Deploy to Vercel
         run: |
           yarn global add vercel
-          vercel --prod
+          vercel --prod --yes
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
