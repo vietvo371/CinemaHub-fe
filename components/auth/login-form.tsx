@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import GoogleIcon from '@/components/icon/google.png';
 import FacebookIcon from '@/components/icon/FacebookIcon.png';
 import Image from 'next/image';
+import { toast } from 'sonner';
 
 export function LoginForm() {
   const router = useRouter();
@@ -24,7 +25,6 @@ export function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     // Validate form
     const errors: typeof formErrors = {};
     if (!formData.email) {
@@ -44,23 +44,19 @@ export function LoginForm() {
     try {
       await login(formData);
     } catch (err: any) {
-      // Xử lý lỗi validation từ API
       if (err.response?.data?.errors) {
         const apiErrors = err.response.data.errors;
-        // Cập nhật formErrors với lỗi từ API
         const newErrors: typeof formErrors = {};
         
-        // Xử lý lỗi email
         if (apiErrors.email && Array.isArray(apiErrors.email)) {
           newErrors.email = apiErrors.email[0];
         }
-        
-        // Xử lý lỗi password
         if (apiErrors.password && Array.isArray(apiErrors.password)) {
           newErrors.password = apiErrors.password[0];
         }
-
         setFormErrors(newErrors);
+      } else {
+        toast.error(err.response?.data?.message || 'Đăng nhập thất bại');
       }
     }
   };

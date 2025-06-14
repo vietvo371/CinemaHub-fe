@@ -7,10 +7,7 @@ export const AuthService = {
       const response = await axiosInstance.post<AuthResponse>('/auth/login', data);
       return response.data;
     } catch (error: any) {
-      if (error.response?.data) {
-        throw error;
-      }
-      throw new Error('Không thể kết nối đến server');
+      throw error;
     }
   },
 

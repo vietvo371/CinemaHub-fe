@@ -1,7 +1,6 @@
 import ClientLayout from '../layouts/client/ClientLayout';
 import { ThemeProvider } from "@/components/theme-provider";
 import { CinemaProvider } from "@/contexts/cinema-context";
-import { Toaster } from "@/components/ui/toaster";
 
 export default function RootLayout({
   children,
@@ -13,7 +12,6 @@ export default function RootLayout({
       <CinemaProvider>
         <ClientLayout>
           {children}
-          <Toaster />
         </ClientLayout>
       </CinemaProvider>
     </ThemeProvider>

@@ -22,8 +22,9 @@ export interface RegisterDto {
   email: string;
   password: string;
   fullName: string;
-  phone?: string;
-  address?: string;
+  phone: string;
+  address: string;
+  confirmPassword: string;
 }
 
 export interface AuthResponse {
@@ -43,12 +44,24 @@ export interface AuthResponse {
 }
 
 export interface RegisterResponse {
-  id: string;
-  email: string;
-  fullName: string;
-  role: 'ADMIN' | 'USER';
-  createdAt: string;
-  updatedAt: string;
+  data: {
+    id: string;
+    email: string;
+    fullName: string;
+    phone: string;
+    address: string;
+    role: string;
+    status: string;
+    refreshToken: string | null;
+    isActive: boolean | null;
+    hashActive: string | null;
+    hashForget: string | null;
+    createdAt: string;
+    updatedAt: string;
+  }
+  statusCode: number;
+  message: string;
+  timestamp: string;
 }
 
 export interface TokenPayload {

@@ -44,25 +44,25 @@ axiosInstance.interceptors.response.use(
       error.message = errorMessage;
     }
 
-    // Handle 401 Unauthorized
-    if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
-      originalRequest._retry = true;
+    // // Handle 401 Unauthorized
+    // if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
+    //   originalRequest._retry = true;
 
-      try {
-        const response = await AuthService.refreshToken();
-        localStorage.setItem('accessToken', response.accessToken);
+    //   try {
+    //     const response = await AuthService.refreshToken();
+    //     localStorage.setItem('accessToken', response.data.access_token);
         
-        if (originalRequest.headers) {
-          originalRequest.headers.Authorization = `Bearer ${response.accessToken}`;
-        }
-        return axiosInstance(originalRequest);
-      } catch (error) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        window.location.href = '/auth/login';
-        return Promise.reject(error);
-      }
-    }
+    //     if (originalRequest.headers) {
+    //       originalRequest.headers.Authorization = `Bearer ${response.data.access_token}`;
+    //     }
+    //     return axiosInstance(originalRequest);
+    //   } catch (error) {
+    //     localStorage.removeItem('accessToken');
+    //     localStorage.removeItem('refreshToken');
+    //     // window.location.href = '/auth/login';
+    //     return Promise.reject(error);
+    //   }
+    // }
 
     return Promise.reject(error);
   }
