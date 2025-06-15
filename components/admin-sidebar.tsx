@@ -91,7 +91,7 @@ export function AdminSidebar() {
   const pathname = usePathname()
 
   return (
-    <div className="hidden md:flex flex-col w-64 border-r bg-background h-[calc(100vh-4rem)] sticky top-16">
+    <div className="hidden md:flex flex-col w-64 border-r bg-background h-[calc(100vh-4rem)] sticky   top-16">
       <div className="flex flex-col gap-2 p-4">
         <div className="px-3 py-2">
           <h2 className="mb-2 px-4 text-lg font-semibold">Quản trị</h2>

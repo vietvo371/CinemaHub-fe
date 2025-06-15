@@ -1,16 +1,14 @@
-import AdminLayout from '../layouts/admin/AdminLayout';
-import { ThemeProvider } from "@/components/theme-provider";
+import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminHeader } from "@/components/admin/AdminHeader";
 
-export default function AdminRootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-      <AdminLayout>
-        {children}
-      </AdminLayout>
-    </ThemeProvider>
+    <div className="min-h-screen bg-gray-50">
+      <AdminSidebar />
+      <div className="md:ml-64">
+        <AdminHeader />
+        <main className="p-6">{children}</main>
+      </div>
+    </div>
   );
 } 

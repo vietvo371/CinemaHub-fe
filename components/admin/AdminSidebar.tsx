@@ -1,126 +1,98 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import {
   BarChart3,
   Film,
+  Tags,
+  Building2,
+  Monitor,
+  Armchair,
   Calendar,
   Ticket,
-  Users,
-  Settings,
-  LayoutDashboard,
-  MessageSquare,
   CreditCard,
-  Store,
-  Bell,
-  LogOut,
+  Newspaper,
+  Users,
+  Heart,
+  Gift,
+  Menu,
+  X,
 } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
-const sidebarItems = [
-  {
-    title: "Tổng quan",
-    icon: <LayoutDashboard className="h-5 w-5" />,
-    href: "/admin",
-    variant: "default",
-  },
-  {
-    title: "Phim",
-    icon: <Film className="h-5 w-5" />,
-    href: "/admin/movies",
-    variant: "ghost",
-  },
-  {
-    title: "Lịch chiếu",
-    icon: <Calendar className="h-5 w-5" />,
-    href: "/admin/showtimes",
-    variant: "ghost",
-  },
-  {
-    title: "Đặt vé",
-    icon: <Ticket className="h-5 w-5" />,
-    href: "/admin/bookings",
-    variant: "ghost",
-  },
-  {
-    title: "Người dùng",
-    icon: <Users className="h-5 w-5" />,
-    href: "/admin/users",
-    variant: "ghost",
-  },
-  {
-    title: "Thống kê",
-    icon: <BarChart3 className="h-5 w-5" />,
-    href: "/admin/analytics",
-    variant: "ghost",
-  },
-  {
-    title: "Thanh toán",
-    icon: <CreditCard className="h-5 w-5" />,
-    href: "/admin/payments",
-    variant: "ghost",
-  },
-  {
-    title: "Bình luận",
-    icon: <MessageSquare className="h-5 w-5" />,
-    href: "/admin/comments",
-    variant: "ghost",
-  },
-  {
-    title: "Cửa hàng",
-    icon: <Store className="h-5 w-5" />,
-    href: "/admin/store",
-    variant: "ghost",
-  },
-  {
-    title: "Thông báo",
-    icon: <Bell className="h-5 w-5" />,
-    href: "/admin/notifications",
-    variant: "ghost",
-  },
-  {
-    title: "Cài đặt",
-    icon: <Settings className="h-5 w-5" />,
-    href: "/admin/settings",
-    variant: "ghost",
-  },
+const menuItems = [
+  { icon: BarChart3, label: "Tổng Quan", href: "/admin" },
+  { icon: Film, label: "Quản Lý Phim", href: "/admin/movies" },
+  { icon: Tags, label: "Quản Lý Thể Loại", href: "/admin/genres" },
+  { icon: Building2, label: "Quản Lý Rạp", href: "/admin/theaters" },
+  { icon: Monitor, label: "Quản Lý Phòng Chiếu", href: "/admin/screens" },
+  { icon: Armchair, label: "Quản Lý Ghế", href: "/admin/seats" },
+  { icon: Calendar, label: "Lịch Chiếu", href: "/admin/showtimes" },
+  { icon: Ticket, label: "Đặt Vé", href: "/admin/bookings" },
+  { icon: CreditCard, label: "Thanh Toán", href: "/admin/payments" },
+  { icon: Newspaper, label: "Tin Tức & Sự Kiện", href: "/admin/news" },
+  { icon: Users, label: "Người Dùng", href: "/admin/users" },
+  { icon: Heart, label: "Sở Thích Người Dùng", href: "/admin/preferences" },
+  { icon: Gift, label: "Khuyến Mãi", href: "/admin/promotions" },
 ]
 
 export function AdminSidebar() {
+  const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
 
   return (
-    <div className="hidden md:flex flex-col w-64 border-r bg-background h-[calc(100vh-4rem)] ">
-      <div className="flex flex-col gap-2 p-4">
-        <div className="px-3 py-2">
-          <h2 className="mb-2 px-4 text-lg font-bold ">CINEMA ADMIN</h2>
-          <div className="space-y-1">
-            {sidebarItems.map((item, index) => (
+    <>
+      {/* Mobile menu button */}
+      <Button
+        variant="ghost"
+        size="icon"
+        className="fixed top-4 left-4 z-50 md:hidden"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+      </Button>
+
+      {/* Sidebar */}
+      <div
+        className={cn(
+          "fixed left-0 top-0 z-40 h-full w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 ease-in-out",
+          isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0",
+        )}
+      >
+        <div className="p-6">
+          <h1 className="text-xl font-bold text-gray-900">CINEMA ADMIN</h1>
+        </div>
+
+        <nav className="px-3">
+          {menuItems.map((item) => {
+            const Icon = item.icon
+            const isActive = pathname === item.href
+
+            return (
               <Link
-                key={index}
+                key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent",
-                  pathname === item.href ? "bg-accent text-accent-foreground" : "transparent",
+                  "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors mb-1",
+                  isActive ? "bg-blue-50 text-blue-700" : "text-gray-700 hover:bg-gray-100",
                 )}
+                onClick={() => setIsOpen(false)}
               >
-                {item.icon}
-                {item.title}
+                <Icon className="h-5 w-5" />
+                {item.label}
               </Link>
-            ))}
-          </div>
-        </div>
+            )
+          })}
+        </nav>
       </div>
-      <div className="mt-auto p-4">
-        <Link
-          href="/admin/logout"
-          className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent"
-        >
-          <LogOut className="h-5 w-5" />
-          Đăng xuất
-        </Link>
-      </div>
-    </div>
+
+      {/* Overlay for mobile */}
+      {isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden" onClick={() => setIsOpen(false)} />
+      )}
+    </>
   )
 }

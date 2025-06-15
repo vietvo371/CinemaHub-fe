@@ -8,14 +8,12 @@ interface AdminLayoutProps {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   return (
-    <div className="min-h-screen flex">
-      <AdminSidebar />
-      <div className="flex-1">
-        <AdminHeader />
-        <main className="p-6 bg-gray-50">
-          {children}
-        </main>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+    <AdminSidebar />
+    <div className="md:ml-64">
+      <AdminHeader />
+      <main className="p-6">{children}</main>
     </div>
+  </div>
   );
 } 
