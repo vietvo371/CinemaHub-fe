@@ -1,47 +1,40 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import type { Movie, FilterOptions } from "@/types"
-import { apiClient } from "@/lib/api"
+import type { Movie, FilterOptions, ApiResponse } from "@/types"
+import { MovieService } from "@/services/api/movies.service"
 
-export function useMovies(initialFilters?: FilterOptions) {
-  const [movies, setMovies] = useState<Movie[]>([])
+
+
+export const useMovies = (filters: FilterOptions) => {
+
+  const [data, setData] = useState<Movie[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [filters, setFilters] = useState<FilterOptions>(initialFilters || {})
-
-  const fetchMovies = useCallback(async () => {
-    try {
-      setLoading(true)
-      setError(null)
-      const response = await apiClient.getMovies(filters)
-      setMovies(response.data)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred")
-    } finally {
-      setLoading(false)
-    }
-  }, [filters])
 
   useEffect(() => {
     fetchMovies()
-  }, [fetchMovies])
+  }, [filters])
 
-  const updateFilters = useCallback((newFilters: Partial<FilterOptions>) => {
-    setFilters((prev) => ({ ...prev, ...newFilters }))
-  }, [])
-
-  const refetch = useCallback(() => {
-    fetchMovies()
-  }, [fetchMovies])
+  const fetchMovies = async () => {
+    try {
+      const response = await MovieService.getAll(filters)
+      setData(response.data.data)
+      setLoading(false)
+      return response.data
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "An error occurred")
+      setLoading(false)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return {
-    movies,
+    data,
     loading,
     error,
-    filters,
-    updateFilters,
-    refetch,
+    fetchMovies
   }
 }
 
@@ -55,8 +48,8 @@ export function useMovie(id: number) {
       try {
         setLoading(true)
         setError(null)
-        const response = await apiClient.getMovie(id)
-        setMovie(response.data)
+        const response = await MovieService.getById(id)
+        // setMovie(response.data.data || null)
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred")
       } finally {

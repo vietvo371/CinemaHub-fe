@@ -1,30 +1,33 @@
-import axios from 'axios';
-import { Movie, CreateMovieDto, UpdateMovieDto } from '@/types/movie.types';
+import axiosInstance from '@/lib/axios';
+import { Movie, FilterOptions, PaginationMeta } from '@/types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+
 
 export class MovieService {
-  static async getAll() {
-    const response = await axios.get<Movie[]>(`${API_URL}/movies`);
+  static async getAll(filters?: FilterOptions) {
+    const response = await axiosInstance.get<{
+      data: Movie[]
+      meta: PaginationMeta
+    }>(`/movies`, { params: filters });
+    return response;
+  }
+
+  static async getById(id: number) {
+    const response = await axiosInstance.get<Movie>(`/movies/${id}`);
     return response.data;
   }
 
-  static async getById(id: string) {
-    const response = await axios.get<Movie>(`${API_URL}/movies/${id}`);
+  static async create(data: Movie) {
+    const response = await axiosInstance.post<Movie>(`/movies`, data);
     return response.data;
   }
 
-  static async create(data: CreateMovieDto) {
-    const response = await axios.post<Movie>(`${API_URL}/movies`, data);
+  static async update(id: number, data: Movie) {
+    const response = await axiosInstance.patch<Movie>(`/movies/${id}`, data);
     return response.data;
   }
 
-  static async update(id: string, data: UpdateMovieDto) {
-    const response = await axios.patch<Movie>(`${API_URL}/movies/${id}`, data);
-    return response.data;
-  }
-
-  static async delete(id: string) {
-    await axios.delete(`${API_URL}/movies/${id}`);
+  static async delete(id: number) {
+    await axiosInstance.delete(`/movies/${id}`);
   }
 } 

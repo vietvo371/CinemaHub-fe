@@ -2,7 +2,7 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { AuthService } from '@/services/api/auth.service';
 import { ApiError } from './api-response';
 
-const API_URL = process.env.NEST_PUBLIC_API_URL || 'http://localhost:3030/api';
+const API_URL = 'http://localhost:3030/api';
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;

@@ -1,20 +1,28 @@
 export interface Movie {
-  id: string
-  title: string
-  director?: string
-  duration?: number
-  releaseDate?: string
-  posterUrl?: string
-  createdAt: string
-  updatedAt: string
-  genres?: MovieGenre[]
-  showtimes?: Showtime[]
+  data : {
+      id: string
+      title: string
+      director: string
+      duration: number
+      releaseDate: string
+      posterUrl: string
+      createdAt: string
+      updatedAt: string
+      genres: string[]
+      slug_title: string
+      trailer_ytb: string
+      manufacturer: string
+      description: string
+      rate: number
+      status: string
+    },
+    meta: PaginationMeta
 }
 
 export interface Showtime {
-  id: string
-  movieId: string
-  roomId: string
+  id: number
+  movieId: number
+  roomId: number
   startTime: string
   endTime?: string
   price?: number
@@ -26,8 +34,8 @@ export interface Showtime {
 }
 
 export interface Room {
-  id: string
-  theaterId: string
+  id: number
+  theaterId: number
   name: string
   capacity?: number
   createdAt: string
@@ -38,8 +46,8 @@ export interface Room {
 }
 
 export interface Seat {
-  id: string
-  roomId: string
+  id: number
+  roomId: number
   row: string
   number: number
   type?: string
@@ -51,9 +59,9 @@ export interface Seat {
 }
 
 export interface Booking {
-  id: string
-  userId: string
-  showtimeId: string
+  id: number
+  userId: number
+  showtimeId: number
   bookingTime: string
   status: string
   createdAt: string
@@ -65,7 +73,7 @@ export interface Booking {
 }
 
 export interface User {
-  id: string
+  id: number
   email: string
   fullName: string
   phone?: string
@@ -79,7 +87,7 @@ export interface User {
 }
 
 export interface Genre {
-  id: string
+  id: number
   name: string
   createdAt: string
   updatedAt: string
@@ -88,9 +96,9 @@ export interface Genre {
 }
 
 export interface MovieGenre {
-  id: string
-  movieId: string
-  genreId: string
+  id: number
+  movieId: number
+  genreId: number
   createdAt: string
   updatedAt: string
   movie?: Movie
@@ -98,7 +106,7 @@ export interface MovieGenre {
 }
 
 export interface Theater {
-  id: string
+  id: number
   name: string
   location?: string
   address?: string
@@ -108,9 +116,9 @@ export interface Theater {
 }
 
 export interface BookingSeat {
-  id: string
-  bookingId: string
-  seatId: string
+  id: number
+  bookingId: number
+  seatId: number
   price?: number
   createdAt: string
   updatedAt: string
@@ -119,8 +127,8 @@ export interface BookingSeat {
 }
 
 export interface Payment {
-  id: string
-  bookingId: string
+  id: number
+  bookingId: number
   amount: number
   paymentMethod?: string
   status: string
@@ -131,7 +139,7 @@ export interface Payment {
 }
 
 export interface Promotion {
-  id: string
+  id: number
   code: string
   discount?: number
   startDate?: string
@@ -142,7 +150,7 @@ export interface Promotion {
 }
 
 export interface NewsEvent {
-  id: string
+  id: number
   title: string
   content?: string
   imageUrl?: string
@@ -152,9 +160,9 @@ export interface NewsEvent {
 }
 
 export interface UserPreference {
-  id: string
-  userId: string
-  genreId: string
+  id: number
+  userId: number
+  genreId: number
   createdAt: string
   updatedAt: string
   user?: User
@@ -162,9 +170,9 @@ export interface UserPreference {
 }
 
 export interface ChatSession {
-  id: string
-  userId: string
-  adminId?: string
+  id: number
+  userId: number
+  adminId?: number
   startTime: string
   endTime?: string
   status: string
@@ -172,6 +180,23 @@ export interface ChatSession {
   updatedAt: string
   user?: User
   admin?: User
+}
+
+export interface PaginationMeta {
+  total: number
+  page: number
+  limit: number
+  totalPages: number
+}
+
+export interface ApiResponse<T> {
+  data: {
+    data: T[]
+    meta: PaginationMeta
+  }
+  statusCode: number
+  message: string
+  timestamp: string
 }
 
 export interface FilterOptions {
@@ -182,10 +207,4 @@ export interface FilterOptions {
   sortOrder?: "asc" | "desc"
   page?: number
   limit?: number
-  startDate?: string
-  endDate?: string
-  theaterId?: string
-  roomId?: string
-  movieId?: string
-  userId?: string
 }
